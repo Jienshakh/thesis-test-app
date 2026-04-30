@@ -1,7 +1,9 @@
 # Тестовое приложение nginx-test-app
 
-##Готовый образ на Docker Hub
-jienshakh/nginx-test-app:v0.1
+
+## Готовый образ на Docker Hub
+
+`jienshakh/nginx-test-app:v0.1`
 
 ## Запуск из готового образа
 

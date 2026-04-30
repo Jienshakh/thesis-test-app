@@ -1,5 +1,14 @@
 # Тестовое приложение nginx-test-app
 
+##Готовый образ на Docker Hub
+jienshakh/nginx-test-app:v0.1
+
+## Запуск из готового образа
+
+```bash
+docker run --rm -d -p 8080:80 jienhakh/nginx-test-app:v0.1
+```
+
 ## Структура проекта
 ```
 test-app/

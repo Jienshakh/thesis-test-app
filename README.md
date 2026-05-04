@@ -8,7 +8,7 @@
 ## Запуск из готового образа
 
 ```bash
-docker run --rm -d -p 8080:80 jienhakh/nginx-test-app:v0.1
+docker run --rm -d -p 8080:80 jienshakh/nginx-test-app:v0.1
 ```
 
 ## Структура проекта

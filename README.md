@@ -102,4 +102,3 @@ curl http://localhost:8080/health
 # Имитация основного API
 curl http://localhost:8080/api/v1/status
 ```
-

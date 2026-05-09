@@ -59,7 +59,7 @@ build-image:
 deploy-k8s:
   stage: deploy
 
-  image: alpine/k8s:1.33.11
+  image: dtzar/helm-kubectl
 
   script:
     - |

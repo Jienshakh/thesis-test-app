@@ -1,6 +1,9 @@
 stages:
   - build
 
+variables:
+  DOCKER_INSECURE_REGISTRIES: "registry.81.26.191.148.nip.io"
+
 build:
   stage: build
   image:
@@ -11,13 +14,14 @@ build:
   before_script:
     - mkdir -p /kaniko/.docker
     - echo "{\"auths\":{\"registry.81.26.191.148.nip.io\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - cat /kaniko/.docker/config.json  # отладка: проверить содержимое
   script:
     - /kaniko/executor 
       --context="$CI_PROJECT_DIR" 
       --dockerfile="$CI_PROJECT_DIR/Dockerfile" 
       --destination="registry.81.26.191.148.nip.io/$CI_PROJECT_PATH_SLUG:$CI_COMMIT_SHORT_SHA" 
       --insecure 
-      --insecure-registry="registry.81.26.191.148.nip.io"
+      --insecure-registry="registry.81.26.191.148.nip.io" 
       --skip-tls-verify
   only:
     - main

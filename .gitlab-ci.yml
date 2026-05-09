@@ -22,6 +22,7 @@ build:
 
   before_script:
     - until docker info; do sleep 2; done
+    - echo "$CI_REGISTRY_PASSWORD" | docker login registry.81.26.191.148.nip.io -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
     - docker login registry.81.26.191.148.nip.io \

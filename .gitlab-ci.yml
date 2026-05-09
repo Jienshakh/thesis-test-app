@@ -53,10 +53,6 @@ build-image:
         docker push $IMAGE_NAME:latest
       fi
 
-  artifacts:
-    reports:
-      dotenv: build.env
-
 # -----------------------
 # DEPLOY VIA HELM
 # -----------------------

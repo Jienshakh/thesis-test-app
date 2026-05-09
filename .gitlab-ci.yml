@@ -78,7 +78,7 @@ deploy-k8s:
 
     - helm upgrade --install test-app ./helm/test-app
       --namespace default
-      --kube-context gitlab-agent:test-app
+      --kube-context netology/test-app:test-app
       --set image.repository=$IMAGE_NAME
       --set image.tag=$TAG
       --set ingress.host=test-app.81.26.191.148.nip.io

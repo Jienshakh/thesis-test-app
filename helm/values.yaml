@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: registry.81.26.191.148.nip.io/netology/test-app
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+  - name: gitlab-registry
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  host: test-app.81.26.191.148.nip.io
+
+nameOverride: ""
+fullnameOverride: ""

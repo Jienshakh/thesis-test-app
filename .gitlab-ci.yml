@@ -59,7 +59,7 @@ build-image:
 deploy-k8s:
   stage: deploy
 
-  image: alpine/helm:3.14.0
+  image: alpine/k8s:1.33.11
 
   script:
     - |

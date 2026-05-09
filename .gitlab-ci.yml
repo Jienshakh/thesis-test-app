@@ -65,25 +65,25 @@ deploy-k8s:
     - kubectl config get-contexts
     - echo "Using context: $KUBE_CONTEXT"
     - kubectl config use-context "$KUBE_CONTEXT"
-
     - |
+        set -e
+
         if [ -n "$CI_COMMIT_TAG" ]; then
           TAG=$CI_COMMIT_TAG
         else
           TAG=$CI_COMMIT_SHORT_SHA
         fi
+
         echo "Deploying $TAG"
 
-    - kubectl config use-context gitlab-agent:test-app
+        kubectl config use-context gitlab-agent:test-app
 
-    - >
-        helm upgrade --install test-app ./helm/test-app
-        --namespace default
-        --kube-context gitlab-agent:test-app
-        --set image.repository=$IMAGE_NAME
-        --set image.tag=$TAG
-        --set ingress.host=test-app.81.26.191.148.nip.io
-
+        helm upgrade --install test-app ./helm/test-app \
+          --namespace default \
+          --kube-context gitlab-agent:test-app \
+          --set image.repository=$IMAGE_NAME \
+          --set image.tag=$TAG \
+          --set ingress.host=test-app.81.26.191.148.nip.io
   rules:
     - if: $CI_COMMIT_TAG
       when: always

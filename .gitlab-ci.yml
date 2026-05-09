@@ -1,0 +1,19 @@
+stages:
+  - build
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD http://registry.81.26.191.148.nip.io
+  script:
+    - docker build -t registry.81.26.191.148.nip.io/$CI_PROJECT_PATH_SLUG:$CI_COMMIT_SHORT_SHA .
+    - docker push registry.81.26.191.148.nip.io/$CI_PROJECT_PATH_SLUG:$CI_COMMIT_SHORT_SHA
+  only:
+    - main

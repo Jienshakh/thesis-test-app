@@ -2,19 +2,18 @@ stages:
   - build
 
 variables:
-  DOCKER_HOST: tcp://docker:2375
+  DOCKER_HOST: tcp://localhost:2375
   DOCKER_TLS_CERTDIR: ""
-  DOCKER_DRIVER: overlay2
 
-build-image:
+build:
   stage: build
 
   image: docker:27
 
   services:
     - name: docker:27-dind
-      alias: docker
       command:
+        - "--host=tcp://0.0.0.0:2375"
         - "--tls=false"
         - "--insecure-registry=registry.81.26.191.148.nip.io"
 
@@ -22,21 +21,13 @@ build-image:
     - release
 
   before_script:
-    - docker info
+    - until docker info; do sleep 2; done
+
+  script:
     - docker login registry.81.26.191.148.nip.io \
         -u "$CI_REGISTRY_USER" \
         -p "$CI_REGISTRY_PASSWORD"
 
-  script:
     - docker build -t registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA .
 
     - docker push registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
-
-    - |
-      if [ "$CI_COMMIT_BRANCH" = "main" ] || [ "$CI_COMMIT_BRANCH" = "master" ]; then
-        docker tag \
-          registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA \
-          registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:latest
-
-        docker push registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:latest
-      fi

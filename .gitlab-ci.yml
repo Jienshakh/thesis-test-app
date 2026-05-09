@@ -12,7 +12,7 @@ build:
   tags:
     - release
   before_script:
-    - cat > /kaniko/.docker/config.json <<EOF
+    - cat > /kaniko/.docker/config.json << "EOF"
       {
         "auths": {
           "$CI_REGISTRY": {

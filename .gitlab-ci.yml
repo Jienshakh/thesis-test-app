@@ -25,9 +25,8 @@ build:
     - echo "$CI_REGISTRY_PASSWORD" | docker login registry.81.26.191.148.nip.io -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
-    - docker login registry.81.26.191.148.nip.io \
-        -u "$CI_REGISTRY_USER" \
-        -p "$CI_REGISTRY_PASSWORD"
+    - docker build -t registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA .
+    - docker push registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA
 
     - docker build -t registry.81.26.191.148.nip.io/root/$CI_PROJECT_NAME:$CI_COMMIT_SHORT_SHA .
 

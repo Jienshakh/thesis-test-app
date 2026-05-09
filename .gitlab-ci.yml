@@ -2,7 +2,9 @@ stages:
   - build
 
 variables:
-  CI_REGISTRY: http://registry.81.26.191.148.nip.io
+  CI_REGISTRY: "http://registry.81.26.191.148.nip.io"
+  DOCKER_INSECURE_REGISTRIES: "registry.81.26.191.148.nip.io"
+
 
 build:
   stage: build

@@ -1,0 +1,4 @@
+ci_access:
+  projects:
+    - id: netology/test-app
+      default_namespace: default

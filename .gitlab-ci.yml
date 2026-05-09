@@ -64,6 +64,7 @@ deploy-k8s:
   script:
     - |
       kubectl config get-contexts
+      kubectl get pods
 
     - |
       if [ -n "$CI_COMMIT_TAG" ]; then

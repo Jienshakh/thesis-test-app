@@ -18,6 +18,7 @@ build:
   image: docker:latest
   services:
     - name: docker:dind
+      command: ["--tls=false"]
       alias: docker
   # Даём контейнеру привилегированный режим (нужно для dind в некоторых кластерах)
   tags:

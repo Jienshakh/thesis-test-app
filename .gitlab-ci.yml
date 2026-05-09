@@ -2,31 +2,22 @@ stages:
   - build
 
 variables:
-  # Отключаем TLS для Docker
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_TLS_VERIFY: 0
-  DOCKER_HOST: tcp://docker:2375
-  # Выключаем авто-определение Registry и указываем HTTP явно
   CI_REGISTRY: http://registry.81.26.191.148.nip.io
-  # Добавляем Insecure для Registry
-  DOCKER_INSECURE_REGISTRIES: registry.81.26.191.148.nip.io
-  # ОТКЛЮЧАЕМ AUTO DEVOPS, чтобы он не мешал
-  AUTO_DEVOPS_EXPLICITLY_ENABLED: "false"
 
 build:
   stage: build
-  image: docker:latest
-  services:
-    - name: docker:dind
-      command: ["--tls=false"]
-      alias: docker
-  # Даём контейнеру привилегированный режим (нужно для dind в некоторых кластерах)
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
   tags:
     - release
   before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
   script:
-    - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH_SLUG:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY/$CI_PROJECT_PATH_SLUG:$CI_COMMIT_SHORT_SHA
+    - /kaniko/executor
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $CI_REGISTRY/$CI_PROJECT_PATH_SLUG:$CI_COMMIT_SHORT_SHA
+      --insecure
   only:
     - main

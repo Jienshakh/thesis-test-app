@@ -65,6 +65,7 @@ deploy-k8s:
     - |
       kubectl config get-contexts
       kubectl config use-context netology/test-app:test-app
+      kubectl config view --minify
       kubectl get pods
 
     - |

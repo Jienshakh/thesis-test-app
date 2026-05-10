@@ -89,7 +89,7 @@ deploy-k8s:
         --set image.tag=$TAG \
         --set ingress.host=test-app.81.26.191.148.nip.io
 
-#  rules:
-#    - if: $CI_COMMIT_TAG
-#      when: always
-#    - when: never
+ rules:
+   - if: $CI_COMMIT_TAG
+     when: always
+   - when: never

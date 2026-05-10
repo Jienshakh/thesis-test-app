@@ -63,19 +63,11 @@ deploy-k8s:
 
   script:
     - |
-      kubectl config set-cluster gitlab \
-        --server=http://gitlab-kas.gitlab.svc.cluster.local:8150/k8s-proxy
-      
-      kubectl config set-credentials agent:1 \
-        --token=$(kubectl get secret -n gitlab-agent-test-app test-app-token -o jsonpath='{.data.token}' | base64 -d)
-      
-      kubectl config set-context netology/test-app:test-app \
-        --cluster=gitlab \
-        --user=agent:1
-      
+      kubectl config get-contexts
       kubectl config use-context netology/test-app:test-app
+      kubectl config view --minify
+      kubectl config set-cluster gitlab --insecure-skip-tls-verify=true
       kubectl get pods
-
 
     - |
       if [ -n "$CI_COMMIT_TAG" ]; then

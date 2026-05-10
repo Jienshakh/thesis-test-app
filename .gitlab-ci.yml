@@ -64,6 +64,7 @@ deploy-k8s:
   script:
     - |
       kubectl config get-contexts
+      kubectl config use-context netology/test-app:test-app
       kubectl get pods
 
     - |

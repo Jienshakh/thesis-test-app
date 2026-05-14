@@ -9,9 +9,6 @@ variables:
   REGISTRY: registry.103.76.54.202.nip.io
   IMAGE_NAME: $REGISTRY/netology/test-app
 
-# -----------------------
-# BUILD IMAGE
-# -----------------------
 build-image:
   stage: build
 
@@ -32,7 +29,6 @@ build-image:
     - echo "$CI_REGISTRY_PASSWORD" | docker login $REGISTRY -u "$CI_REGISTRY_USER" --password-stdin
 
   script:
-    # IMAGE TAG STRATEGY
     - |
       if [ -n "$CI_COMMIT_TAG" ]; then
         TAG=$CI_COMMIT_TAG
@@ -46,34 +42,18 @@ build-image:
 
     - docker push $IMAGE_NAME:$TAG
 
-    # latest only for main branch
     - |
       if [ "$CI_COMMIT_BRANCH" = "main" ] || [ "$CI_COMMIT_BRANCH" = "master" ]; then
         docker tag $IMAGE_NAME:$TAG $IMAGE_NAME:latest
         docker push $IMAGE_NAME:latest
       fi
 
-# -----------------------
-# DEPLOY VIA HELM
-# -----------------------
 deploy-k8s:
   stage: deploy
 
   image: dtzar/helm-kubectl
 
-  before_script:
-    # Декодируем админский kubeconfig
-    - echo $KUBECONFIG_B64 | base64 -d > /tmp/kubeconfig
-    # Устанавливаем переменную для helm/kubectl
-    - export KUBECONFIG=/tmp/kubeconfig
-
   script:
-#    - |
-#      kubectl config get-contexts
-#      kubectl config use-context netology/test-app:test-app
-##      kubectl config view --minify
-#      kubectl config set-cluster gitlab --insecure-skip-tls-verify=true
-#      kubectl get pods
     
     - |
       if [ -n "$CI_COMMIT_TAG" ]; then
@@ -83,7 +63,7 @@ deploy-k8s:
       fi
     - echo "Deploying $TAG"
     - |
-      helm --kubeconfig /tmp/kubeconfig upgrade --install test-app ./helm/ \
+      helm upgrade --install test-app ./helm/ \
         --namespace default \
         --set image.repository=$IMAGE_NAME \
         --set image.tag=$TAG \

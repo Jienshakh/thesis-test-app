@@ -3,10 +3,10 @@ stages:
   - deploy
 
 variables:
-  DOCKER_HOST: tcp://docker:2375
+  DOCKER_HOST: tcp://localhost:2375
   DOCKER_TLS_CERTDIR: ""
 
-  REGISTRY: registry.81.26.191.148.nip.io
+  REGISTRY: registry.103.76.54.202.nip.io
   IMAGE_NAME: $REGISTRY/netology/test-app
 
 # -----------------------
@@ -22,7 +22,7 @@ build-image:
       command:
         - "--host=tcp://0.0.0.0:2375"
         - "--tls=false"
-        - "--insecure-registry=registry.81.26.191.148.nip.io"
+        - "--insecure-registry=registry.103.76.54.202.nip.io"
 
   tags:
     - release
@@ -87,7 +87,7 @@ deploy-k8s:
         --namespace default \
         --set image.repository=$IMAGE_NAME \
         --set image.tag=$TAG \
-        --set ingress.host=test-app.81.26.191.148.nip.io
+        --set ingress.host=test-app.103.76.54.202.nip.io
 
   rules:
     - if: $CI_COMMIT_TAG

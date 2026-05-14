@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: registry.81.26.191.148.nip.io/netology/test-app
+  repository: registry.103.76.54.202.nip.io/netology/test-app
   pullPolicy: IfNotPresent
   tag: ""
 
@@ -15,7 +15,8 @@ service:
 ingress:
   enabled: true
   className: nginx
-  host: test-app.81.26.191.148.nip.io
+  host: test-app.103.76.54.202.nip.io
 
 nameOverride: ""
 fullnameOverride: ""
+

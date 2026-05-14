@@ -83,7 +83,7 @@ deploy-k8s:
       fi
     - echo "Deploying $TAG"
     - |
-      helm upgrade --install test-app ./helm/ \
+      helm --kubeconfig /tmp/kubeconfig upgrade --install test-app ./helm/ \
         --namespace default \
         --set image.repository=$IMAGE_NAME \
         --set image.tag=$TAG \
